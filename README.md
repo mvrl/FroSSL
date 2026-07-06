@@ -45,6 +45,15 @@ FroSSL is efficient with two views and gets *even more efficient with more views
 
 Increasing the number of augmented views often improves SSL optimization, but many covariance-based objectives become expensive in this setting because their regularizers rely on eigendecomposition, which scales poorly with the number of views. FroSSL was designed specifically to make **multiview covariance regularization practical**: the Frobenius-norm term is cheap to compute per view, so training on 4 or 8 views is a straightforward configuration change rather than a computational burden.
 
+## Available in popular SSL libraries
+
+To make FroSSL easy to use with a familiar API, we are integrating it into widely used SSL libraries. These integrations are currently in progress:
+
+- **lightly** — a `FroSSLLoss` module with PyTorch and PyTorch-Lightning examples and a CIFAR-10 benchmark entry ([pull request](https://github.com/lightly-ai/lightly/pull/1962)).
+- **solo-learn** — the FroSSL method and loss with training configs, tests, and docs ([pull request](https://github.com/vturrisi/solo-learn/pull/398)).
+
+Until these land, you can use this repository directly (see [Quick Start](#quick-start)).
+
 ## Quick Start
 
 ```bash
@@ -134,6 +143,27 @@ To use more views, increase the number of crops in the augmentation config (`scr
 **Takeaway:** FroSSL learns representations of competitive quality while consistently reaching a target accuracy in *fewer training epochs* than other SSL objectives, and its advantage widens as more views are added. In the paper, FroSSL trains a ResNet-18 to competitive linear-probe accuracy on STL-10, Tiny ImageNet, and ImageNet-100.
 
 See the [FroSSL paper](https://arxiv.org/abs/2310.02903) for the full linear-probe tables, convergence curves, and ablations. Pretrained checkpoints (see below) will reproduce these numbers directly.
+
+### Reproducible CIFAR-10 comparison
+
+As an independent check while adding FroSSL to [lightly](https://github.com/lightly-ai/lightly/pull/1962), we ran it through lightly's CIFAR-10 kNN benchmark against seven common SSL methods **under an identical protocol on the same GPU** (ResNet-18, batch size 512, 200 epochs, kNN with k=200). This is a two-view configuration — FroSSL's advantage grows further with more views (see [Faster convergence](#faster-convergence)).
+
+| Method | kNN Top-1 | Runtime | Peak GPU |
+|--------------|:---------:|:-------:|:--------:|
+| **FroSSL**   | **86.9%** | 52.1 min | 4.83 GB |
+| BYOL         | 86.5%     | 62.5 min | 5.43 GB |
+| DCL          | 85.0%     | 51.9 min | 4.85 GB |
+| SimCLR       | 84.8%     | 51.6 min | 4.85 GB |
+| MoCo         | 84.8%     | 64.9 min | 5.53 GB |
+| NNCLR        | 83.8%     | 52.8 min | 4.96 GB |
+| Barlow Twins | 83.5%     | 51.8 min | 4.96 GB |
+| SimSiam      | 82.0%     | 52.1 min | 4.97 GB |
+
+FroSSL reaches the **highest kNN accuracy**, at the **lowest peak memory** and in the fastest tier of runtimes (the momentum-encoder methods BYOL and MoCo are noticeably slower). It is also the fastest to converge: it matches every other method's *final* 200-epoch accuracy in fewer epochs — e.g. Barlow Twins' best by epoch 138 and SimCLR's by epoch 151 — then continues to improve.
+
+![CIFAR-10 kNN accuracy vs epoch for FroSSL and seven common SSL methods, same GPU and protocol](experiments/lightly_cifar10/cifar10_knn_curves.png)
+
+<sub>Single seed. kNN accuracy is hardware-independent; runtime and peak memory were measured on one NVIDIA RTX 4090 and are comparable within this run. Per-epoch data: [`experiments/lightly_cifar10/cifar10_knn_curves.csv`](experiments/lightly_cifar10/cifar10_knn_curves.csv).</sub>
 
 ### Pretrained models
 
