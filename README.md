@@ -142,7 +142,7 @@ To use more views, increase the number of crops in the augmentation config (`scr
 
 **Takeaway:** FroSSL learns representations of competitive quality while consistently reaching a target accuracy in *fewer training epochs* than other SSL objectives, and its advantage widens as more views are added. In the paper, FroSSL trains a ResNet-18 to competitive linear-probe accuracy on STL-10, Tiny ImageNet, and ImageNet-100.
 
-See the [FroSSL paper](https://arxiv.org/abs/2310.02903) for the full linear-probe tables, convergence curves, and ablations. Pretrained checkpoints (see below) will reproduce these numbers directly.
+See the [FroSSL paper](https://arxiv.org/abs/2310.02903) for the full linear-probe tables, convergence curves, and ablations.
 
 ### Reproducible CIFAR-10 comparison
 
@@ -164,16 +164,6 @@ FroSSL reaches the **highest kNN accuracy**, at the **lowest peak memory** and i
 ![CIFAR-10 kNN accuracy vs epoch for FroSSL and seven common SSL methods, same GPU and protocol](experiments/lightly_cifar10/cifar10_knn_curves.png)
 
 <sub>Single seed. kNN accuracy is hardware-independent; runtime and peak memory were measured on one NVIDIA RTX 4090 and are comparable within this run. Per-epoch data: [`experiments/lightly_cifar10/cifar10_knn_curves.csv`](experiments/lightly_cifar10/cifar10_knn_curves.csv).</sub>
-
-### Pretrained models
-
-We are preparing public checkpoints. Once available, this table will provide, for each entry, the dataset, backbone, download link, and linear-probe accuracy.
-
-| Dataset      | Backbone  | Views | Linear probe | Download    |
-|--------------|-----------|:-----:|:------------:|-------------|
-| STL-10       | ResNet-18 | 2     | *coming soon* | *coming soon* |
-| Tiny ImageNet| ResNet-18 | 2     | *coming soon* | *coming soon* |
-| ImageNet-100 | ResNet-18 | 2     | *coming soon* | *coming soon* |
 
 ## Method overview
 
