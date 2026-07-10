@@ -47,12 +47,12 @@ Increasing the number of augmented views often improves SSL optimization, but ma
 
 ## Available in popular SSL libraries
 
-To make FroSSL easy to use with a familiar API, we are integrating it into widely used SSL libraries. These integrations are currently in progress:
+To make FroSSL easy to use with a familiar API, we are integrating it into widely used SSL libraries:
 
-- **lightly** — a `FroSSLLoss` module with PyTorch and PyTorch-Lightning examples and a CIFAR-10 benchmark entry ([pull request](https://github.com/lightly-ai/lightly/pull/1962)).
-- **solo-learn** — the FroSSL method and loss with training configs, tests, and docs ([pull request](https://github.com/vturrisi/solo-learn/pull/398)).
+- **lightly** — a `FroSSLLoss` module with PyTorch and PyTorch-Lightning examples and a CIFAR-10 benchmark entry. **Merged** ([pull request](https://github.com/lightly-ai/lightly/pull/1962)) — available now on lightly's `master` branch, not yet in a tagged PyPI release; install from source (`pip install git+https://github.com/lightly-ai/lightly.git`) to use it today.
+- **solo-learn** — the FroSSL method and loss with training configs, tests, and docs ([pull request](https://github.com/vturrisi/solo-learn/pull/398), in progress).
 
-Until these land, you can use this repository directly (see [Quick Start](#quick-start)).
+You can also use this repository directly (see [Quick Start](#quick-start)).
 
 ## Quick Start
 
@@ -83,7 +83,7 @@ conda activate frossl
 pip install -r requirements.txt
 ```
 
-FroSSL builds on the excellent [solo-learn](https://github.com/vturrisi/solo-learn) library. We are preparing pull requests to add FroSSL to [solo-learn](https://github.com/vturrisi/solo-learn) and [lightly](https://github.com/lightly-ai/lightly) — links will be added here once merged.
+FroSSL builds on the excellent [solo-learn](https://github.com/vturrisi/solo-learn) library. FroSSL is also available in [lightly](https://github.com/lightly-ai/lightly) (merged, see [Available in popular SSL libraries](#available-in-popular-ssl-libraries)); a pull request to add it to solo-learn is in progress.
 
 ### Datasets
 
@@ -146,7 +146,7 @@ See the [FroSSL paper](https://arxiv.org/abs/2310.02903) for the full linear-pro
 
 ### Reproducible CIFAR-10 comparison
 
-As an independent check while adding FroSSL to [lightly](https://github.com/lightly-ai/lightly/pull/1962), we ran it through lightly's CIFAR-10 kNN benchmark against seven common SSL methods **under an identical protocol on the same GPU** (ResNet-18, batch size 512, 200 epochs, kNN with k=200). This is a two-view configuration — FroSSL's advantage grows further with more views (see [Faster convergence](#faster-convergence)).
+As an independent check while adding FroSSL to [lightly](https://github.com/lightly-ai/lightly/pull/1962) (merged — see [Available in popular SSL libraries](#available-in-popular-ssl-libraries)), we ran it through lightly's CIFAR-10 kNN benchmark against seven common SSL methods **under an identical protocol on the same GPU** (ResNet-18, batch size 512, 200 epochs, kNN with k=200). This is a two-view configuration — FroSSL's advantage grows further with more views (see [Faster convergence](#faster-convergence)).
 
 | Method | kNN Top-1 | Runtime | Peak GPU |
 |--------------|:---------:|:-------:|:--------:|
