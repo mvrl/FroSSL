@@ -6,7 +6,7 @@
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0](https://img.shields.io/badge/PyTorch-2.0.1-ee4c2c.svg)](https://pytorch.org/)
 
-**FroSSL is a self-supervised learning (SSL) objective for efficient multiview representation learning.** It combines covariance regularization with multiview training while avoiding expensive eigendecomposition, letting you reach strong representations *faster* without sacrificing quality. The objective is simple: mean-squared error for augmentation invariance plus a Frobenius-norm covariance term to prevent collapse.
+**FroSSL is a self-supervised learning (SSL) objective for efficient multiview representation learning.** It combines covariance regularization with multiview training while avoiding expensive eigendecomposition, letting you reach strong representations *faster* without sacrificing quality. The objective is simple: mean-squared error for augmentation invariance plus a Frobenius-norm covariance term to prevent collapse. FroSSL is also available in [lightly](https://github.com/lightly-ai/lightly) as `FroSSLLoss`.
 
 If you are looking for an SSL baseline that is easy to understand, cheap to train, and scales naturally to many augmented views, FroSSL is designed for you.
 
@@ -45,15 +45,6 @@ FroSSL is efficient with two views and gets *even more efficient with more views
 
 Increasing the number of augmented views often improves SSL optimization, but many covariance-based objectives become expensive in this setting because their regularizers rely on eigendecomposition, which scales poorly with the number of views. FroSSL was designed specifically to make **multiview covariance regularization practical**: the Frobenius-norm term is cheap to compute per view, so training on 4 or 8 views is a straightforward configuration change rather than a computational burden.
 
-## Available in popular SSL libraries
-
-To make FroSSL easy to use with a familiar API, we are integrating it into widely used SSL libraries:
-
-- **lightly** — a `FroSSLLoss` module with PyTorch and PyTorch-Lightning examples and a CIFAR-10 benchmark entry. **Merged** ([pull request](https://github.com/lightly-ai/lightly/pull/1962)) — available now on lightly's `master` branch, not yet in a tagged PyPI release; install from source (`pip install git+https://github.com/lightly-ai/lightly.git`) to use it today.
-- **solo-learn** — the FroSSL method and loss with training configs, tests, and docs ([pull request](https://github.com/vturrisi/solo-learn/pull/398), in progress).
-
-You can also use this repository directly (see [Quick Start](#quick-start)).
-
 ## Quick Start
 
 ```bash
@@ -83,7 +74,7 @@ conda activate frossl
 pip install -r requirements.txt
 ```
 
-FroSSL builds on the excellent [solo-learn](https://github.com/vturrisi/solo-learn) library. FroSSL is also available in [lightly](https://github.com/lightly-ai/lightly) (merged, see [Available in popular SSL libraries](#available-in-popular-ssl-libraries)); a pull request to add it to solo-learn is in progress.
+FroSSL builds on the excellent [solo-learn](https://github.com/vturrisi/solo-learn) library. FroSSL is also available in [lightly](https://github.com/lightly-ai/lightly) as `FroSSLLoss`.
 
 ### Datasets
 
@@ -146,7 +137,7 @@ See the [FroSSL paper](https://arxiv.org/abs/2310.02903) for the full linear-pro
 
 ### Reproducible CIFAR-10 comparison
 
-As an independent check while adding FroSSL to [lightly](https://github.com/lightly-ai/lightly/pull/1962) (merged — see [Available in popular SSL libraries](#available-in-popular-ssl-libraries)), we ran it through lightly's CIFAR-10 kNN benchmark against seven common SSL methods **under an identical protocol on the same GPU** (ResNet-18, batch size 512, 200 epochs, kNN with k=200). This is a two-view configuration — FroSSL's advantage grows further with more views (see [Faster convergence](#faster-convergence)).
+As an independent check while adding FroSSL to [lightly](https://github.com/lightly-ai/lightly), we ran it through lightly's CIFAR-10 kNN benchmark against seven common SSL methods **under an identical protocol on the same GPU** (ResNet-18, batch size 512, 200 epochs, kNN with k=200). This is a two-view configuration — FroSSL's advantage grows further with more views (see [Faster convergence](#faster-convergence)).
 
 | Method | kNN Top-1 | Runtime | Peak GPU |
 |--------------|:---------:|:-------:|:--------:|
